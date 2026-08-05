@@ -23,19 +23,43 @@ Autopsy, Foremost, PhotoRec, ExifTool, `xxd`, `dd`, Python, Folium, Linux
 
 ## Investigation Process
 
-1. Reviewed the forensic image's filesystem structure and looked for recoverable artifacts.
-2. Ran file-carving tools to recover deleted images based on file signatures.
-3. Inspected the recovered files and checked file headers where needed to confirm what I was actually looking at.
-4. Pulled metadata, including GPS coordinates, out of the recovered photos using ExifTool.
-5. Reviewed the coordinates for relevance and converted them into map-ready location data.
-6. Built an interactive Folium map with clustered markers and embedded image previews.
+1. Started by going through the forensic media to see what image artifacts were actually recoverable, and whether any deleted photos were still sitting in unallocated space.
+
+2. Carved JPEG images out based on file signatures rather than trusting the original filesystem structure, since the files I cared about were deleted. The recovery tool assigned them generic filenames like `f0334504.jpg` and `f0340088.jpg`.
+
+3. Went through the recovered files and checked a few of the questionable ones at the byte level to confirm file headers and boundaries, and to see if there was any more image data worth pulling out.
+
+4. Ran ExifTool against the recovered JPEGs to see what metadata survived. The fields I cared about most were:
+   - Original date and time
+   - GPS latitude
+   - GPS longitude
+   - Camera/device info, when it was there
+
+5. Filtered down to the photos that actually had usable GPS coordinates, then converted those into decimal lat/long values I could actually map.
+
+6. Organized everything I had, filename, timestamp, latitude, longitude, into a single working set of evidence.
+
+7. Built an interactive map in Python using Folium. Each recovered photo got its own marker showing:
+   - The recovered filename
+   - The photo's timestamp
+   - Its GPS location
+   - A preview of the image itself
+
+8. Added clustering to the markers, since several photos were taken close enough together that individual pins would've overlapped and made the map harder to read.
+
+9. Exported the finished map as a standalone HTML file so it could be opened and reviewed in any browser.
 
 ## Key Findings
 
-- Recovered deleted image artifacts from the forensic media
-- Identified photos containing embedded geographic coordinates
-- Connected recovered images to physical locations relevant to the scenario
-- Built an interactive visualization that made the geographic evidence much easier to review
+- Several of the recovered JPEGs still had embedded GPS metadata intact.
+- The coordinates placed the photos around a shopping mall in Oakbrook, Illinois, not just one single point.
+- The locations formed a loose cluster around the mall and the surrounding properties, rather than all sitting on top of each other.
+- Between the timestamps and the coordinates, I could get a rough sense of the order the photos were taken in and how the person moved between locations.
+- Plotting everything spatially made the relationships between photos obvious in a way a plain metadata list never would have.
+- The final map kept each photo's filename, timestamp, and preview tied directly to its marker, so nothing lost context once it was on the map.
+- Altogether, it was a decent demonstration of how deleted file recovery, metadata analysis, and geospatial visualization can come together to reconstruct where and roughly when something happened.
+
+The map includes entries like `f0334504.jpg` and `f0340088.jpg`, both carrying June 27, 2015 timestamps and distinct coordinates around the same Illinois location.
 
 ## Evidence Visualization
 
