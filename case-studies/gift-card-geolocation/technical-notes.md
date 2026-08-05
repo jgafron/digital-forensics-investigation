@@ -84,7 +84,7 @@ Used Python and Folium to build an interactive HTML map. Each marker shows:
 
 Added marker clustering to keep nearby evidence locations from overlapping.
 
-[View the interactive evidence map](./evidence-map.html)
+[View the interactive evidence map](https://jgafron.github.io/digital-forensics-investigation/case-studies/gift-card-geolocation/evidence-map.html)
 
 ## Limitations
 
