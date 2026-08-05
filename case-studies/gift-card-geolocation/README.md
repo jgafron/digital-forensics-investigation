@@ -39,11 +39,11 @@ Autopsy, Foremost, PhotoRec, ExifTool, `xxd`, `dd`, Python, Folium, Linux
 
 ## Evidence Visualization
 
-The investigation produced an interactive HTML map with clustered evidence markers. Each marker represents a recovered location, with supporting info or an image preview where available.
+The recovered photographs contained GPS metadata associated with locations around a shopping mall in Illinois. I plotted those coordinates on an interactive Folium map so the evidence could be reviewed spatially.
 
-The interactive map is available here: [Open the evidence map](./evidence-map.html)
+Each marker represents the location where a recovered photograph was taken. The clustered layout makes it easier to identify where the images were concentrated and examine the relationship between the photographs and nearby locations.
 
-> GitHub may display the HTML source instead of running the interactive map. Download the file and open it locally in a browser for the full visualization.
+[View the interactive evidence map](https://jgafron.github.io/digital-forensics-investigation/case-studies/gift-card-geolocation/evidence-map.html)
 
 ## Skills Demonstrated
 
