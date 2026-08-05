@@ -23,43 +23,35 @@ Autopsy, Foremost, PhotoRec, ExifTool, `xxd`, `dd`, Python, Folium, Linux
 
 ## Investigation Process
 
-1. Started by going through the forensic media to see what image artifacts were actually recoverable, and whether any deleted photos were still sitting in unallocated space.
+1. Pulled down the compressed forensic image `fsf.dd.bz2` from the course server and decompressed it to start working with it.
 
-2. Carved JPEG images out based on file signatures rather than trusting the original filesystem structure, since the files I cared about were deleted. The recovery tool assigned them generic filenames like `f0334504.jpg` and `f0340088.jpg`.
+2. Inspected the disk layout to find the NTFS partition inside the image, then mounted it read-only so I wouldn't risk modifying the original evidence.
 
-3. Went through the recovered files and checked a few of the questionable ones at the byte level to confirm file headers and boundaries, and to see if there was any more image data worth pulling out.
+3. Started with manual carving, going through the image at the byte level and hunting for JPEG headers and footers to find image boundaries by hand before pulling anything out.
 
-4. Ran ExifTool against the recovered JPEGs to see what metadata survived. The fields I cared about most were:
-   - Original date and time
-   - GPS latitude
-   - GPS longitude
-   - Camera/device info, when it was there
+4. Ran Foremost for automated carving, which recovered 204 JPEG files and 137 GIF files. Most of it turned out to be noise, unrelated or nonsensical files, so I still had to go through everything manually to find what actually mattered.
 
-5. Filtered down to the photos that actually had usable GPS coordinates, then converted those into decimal lat/long values I could actually map.
+5. Used PhotoRec as a second recovery pass, then combined the output with Foremost's results and ran everything through a duplicate finder to clean things up.
 
-6. Organized everything I had, filename, timestamp, latitude, longitude, into a single working set of evidence.
+6. Pulled metadata out of the recovered JPEGs with ExifTool, GPS coordinates, timestamps, camera and device info, that kind of thing.
 
-7. Built an interactive map in Python using Folium. Each recovered photo got its own marker showing:
-   - The recovered filename
-   - The photo's timestamp
-   - Its GPS location
-   - A preview of the image itself
+7. Split the recovered images into two groups: ones with usable GPS data and ones without. Sixteen images had valid GPS coordinates, timestamps, and device info, all traced back to an iPhone 4S and all captured in or around Oakbrook Center in Illinois.
 
-8. Added clustering to the markers, since several photos were taken close enough together that individual pins would've overlapped and made the map harder to read.
+8. Cross-referenced the storefront and gift-card photos against their timestamps and coordinates to build a picture of where the person was and when.
 
-9. Exported the finished map as a standalone HTML file so it could be opened and reviewed in any browser.
+9. Built an interactive map in Folium, with each marker showing a recovered filename, timestamp, location, and image preview, and added clustering so nearby photos didn't overlap and bury each other.
 
 ## Key Findings
 
-- Several of the recovered JPEGs still had embedded GPS metadata intact.
-- The coordinates placed the photos around a shopping mall in Oakbrook, Illinois, not just one single point.
-- The locations formed a loose cluster around the mall and the surrounding properties, rather than all sitting on top of each other.
-- Between the timestamps and the coordinates, I could get a rough sense of the order the photos were taken in and how the person moved between locations.
-- Plotting everything spatially made the relationships between photos obvious in a way a plain metadata list never would have.
-- The final map kept each photo's filename, timestamp, and preview tied directly to its marker, so nothing lost context once it was on the map.
-- Altogether, it was a decent demonstration of how deleted file recovery, metadata analysis, and geospatial visualization can come together to reconstruct where and roughly when something happened.
-
-The map includes entries like `f0334504.jpg` and `f0340088.jpg`, both carrying June 27, 2015 timestamps and distinct coordinates around the same Illinois location.
+- Automated carving with Foremost recovered 204 JPEG files and 137 GIF files from the image.
+- Most of that recovered material wasn't useful, it took manual review and metadata analysis to isolate anything relevant.
+- 31 recovered images had no usable GPS or device metadata but visually showed gift cards or gift-card displays.
+- 16 images had valid GPS coordinates, timestamps, and device metadata, all captured on an iPhone 4S in or around Oakbrook Center, Illinois.
+- 12 of those geotagged photos showed storefronts around the mall, including Macy's, Gap, Nordstrom, and Abercrombie.
+- 4 GPS-tagged photos specifically showed gift-card racks, captured within about a 15-minute window on June 27, 2015 (roughly 12:32 PM to 12:47 PM), all within a few hundred feet of each other near the mall.
+- A separate recovered photo of a Gap storefront carried coordinates that lined up with the same Oakbrook Center location, reinforcing the pattern.
+- Between the GPS data, timestamps, device info, and the storefront/gift-card imagery, a consistent location and activity pattern emerged, someone moving through a small section of the mall over a short window of time, stopping at gift-card displays along the way.
+- Plotting all 16 geotagged images on the interactive map made that pattern much easier to see than scrolling through metadata as plain text ever would have.
 
 ## Evidence Visualization
 
