@@ -72,6 +72,12 @@ Each marker represents the location where a recovered photograph was taken. The 
 - Python-based geospatial visualization
 - Technical documentation
 
+## Technical Details
+
+More detail on the file carving, metadata extraction, recovered artifacts, and mapping workflow is in the supporting technical notes.
+
+[View technical notes](./technical-notes.md)
+
 ## Academic Disclaimer
 
 This investigation was completed as part of academic digital forensics coursework. The scenario, identities, and evidence were provided for educational purposes and don't represent a real client or active investigation.
