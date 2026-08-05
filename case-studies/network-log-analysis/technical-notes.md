@@ -84,21 +84,27 @@ The failed logins under `jschmo` weren't tightly clustered, they were spread out
 Rather than leaning on one field, the investigation correlated across the full chain:
 
 username
+
 ↓
 
 RADIUS authentication event
+
 ↓
 
 MAC address
+
 ↓
 
 DHCP hostname
+
 ↓
 
 IP address
+
 ↓
 
 device type and manufacturer
+
 ↓
 
 access point and timestamp
