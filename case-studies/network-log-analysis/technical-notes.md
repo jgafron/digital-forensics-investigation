@@ -85,16 +85,22 @@ Rather than leaning on one field, the investigation correlated across the full c
 
 username
 ↓
+
 RADIUS authentication event
 ↓
+
 MAC address
 ↓
+
 DHCP hostname
 ↓
+
 IP address
 ↓
+
 device type and manufacturer
 ↓
+
 access point and timestamp
 
 
