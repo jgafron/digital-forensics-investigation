@@ -59,6 +59,8 @@ The investigation included multiple E01 forensic images and supporting reports, 
 
 ## Investigation Process
 
+Most artifact examination and cross-device correlation were performed in Autopsy after the evidence images were validated and prepared.
+
 1. Calculated SHA-512 hashes for the provided evidence images and supporting reports.
 
 2. Compared the calculated values against the supplied checksum list to verify evidence integrity.
